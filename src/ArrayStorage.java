@@ -9,6 +9,7 @@ public class ArrayStorage {
 
     void clear() {
         Arrays.fill(storage, 0, index, null);
+        index = 0;
     }
 
     void save(Resume resume) {
@@ -30,6 +31,7 @@ public class ArrayStorage {
         for (int i = 0; i < storage.length; i++) {
             if (storage[i].uuid.equals(uuid)) {
                 System.arraycopy(storage, i + 1, storage, i, storage.length - 1 - index);
+                index--;
                 break;
             }
         }
