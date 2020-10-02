@@ -22,7 +22,7 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        storage[index] = resume;
+
     }
 
     public Resume get(String uuid) {
