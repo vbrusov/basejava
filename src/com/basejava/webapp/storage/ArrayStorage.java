@@ -61,7 +61,8 @@ public class ArrayStorage {
             System.out.println("Error. Resume " + uuid + " not found.");
             System.out.println("----------------------------");
         } else {
-            System.arraycopy(storage, index + 1, storage, index, storage.length - 1 - size);
+            storage[index] = storage[size - 1];
+            storage[size - 1] = null;
             size--;
         }
     }
