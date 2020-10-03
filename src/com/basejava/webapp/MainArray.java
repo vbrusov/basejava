@@ -43,7 +43,7 @@ public class MainArray {
                     break;
                 case "update":
                     resume = new Resume();
-                    ARRAY_STORAGE.get(uuid);
+                    resume.setUuid(uuid);
                     ARRAY_STORAGE.update(resume);
                     printAll();
                     break;
