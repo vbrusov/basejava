@@ -66,13 +66,13 @@ public abstract class AbstractArrayStorageTest {
         Assert.assertEquals(RESUME_1, allElements[0]);
         Assert.assertEquals(RESUME_2, allElements[1]);
         Assert.assertEquals(RESUME_3, allElements[2]);
-
     }
 
     @Test
     public void save() throws Exception {
         storage.save(RESUME_4);
         Assert.assertEquals(4, storage.size());
+        storage.get(UUID_4);
     }
 
     @Test(expected = ExistStorageException.class)
@@ -82,32 +82,32 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = StorageException.class)
     public void saveOverflow() throws Exception {
-        for(int i = 0; i <=  AbstractArrayStorage.STORAGE_LIMIT; i++) {
+        for (int i = 0; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
             storage.save(new Resume());
         }
-        storage.save(new Resume());
     }
 
-    @Test
+    @Test(expected = NotExistStorageException.class)
     public void delete() throws Exception {
         storage.delete(UUID_3);
         Assert.assertEquals(2, storage.size());
+        storage.get(UUID_3);
     }
 
     @Test(expected = NotExistStorageException.class)
     public void deleteNotExist() throws Exception {
-        storage.delete("unknown");
+        storage.delete(UUID_4);
     }
 
     @Test
     public void get() throws Exception {
-        Assert.assertEquals(RESUME_1, storage.get(RESUME_1.getUuid()));
-        Assert.assertEquals(RESUME_2, storage.get(RESUME_2.getUuid()));
-        Assert.assertEquals(RESUME_3, storage.get(RESUME_3.getUuid()));
+        Assert.assertEquals(RESUME_1, storage.get(UUID_1));
+        Assert.assertEquals(RESUME_2, storage.get(UUID_2));
+        Assert.assertEquals(RESUME_3, storage.get(UUID_3));
     }
 
     @Test(expected = NotExistStorageException.class)
     public void getNotExist() throws Exception {
-        storage.get("unknown");
+        storage.get(UUID_4);
     }
 }
