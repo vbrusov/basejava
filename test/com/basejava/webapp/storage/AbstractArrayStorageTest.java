@@ -56,7 +56,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() throws Exception {
-        storage.get("unknown");
+        storage.get(UUID_4);
     }
 
     @Test
@@ -87,7 +87,7 @@ public abstract class AbstractArrayStorageTest {
                 storage.save(new Resume());
             }
         } catch (StorageException error) {
-            Assert.fail("Error. Test fai" + error);
+            Assert.fail("Overflow happened ahead of time");
         }
         storage.save(new Resume());
     }
