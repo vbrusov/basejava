@@ -6,7 +6,7 @@ import java.util.*;
 
 public class MapStorage extends AbstractStorage {
 
-    Map<String, Resume> map = new LinkedHashMap<>();
+    private final Map<String, Resume> map = new LinkedHashMap<>();
 
     @Override
     protected boolean isExist(Object key) {
@@ -45,17 +45,8 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     public Resume[] getAll() {
-        Resume[] resumeArray = new Resume[map.size()];
-        Set entries = map.entrySet();
-        Iterator entriesIterator = entries.iterator();
-
-        int i = 0;
-        while (entriesIterator.hasNext()) {
-            Map.Entry mapping = (Map.Entry) entriesIterator.next();
-            resumeArray[i] = (Resume) mapping.getValue();
-            i++;
-        }
-        return resumeArray;
+        ArrayList<Resume> resumeArray = new ArrayList<>(map.values());
+        return resumeArray.toArray(new Resume[map.size()]);
     }
 
     @Override
