@@ -4,7 +4,7 @@ import com.basejava.webapp.model.Resume;
 
 import java.util.*;
 
-public class MapStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage {
 
     private final Map<String, Resume> map = new LinkedHashMap<>();
 
@@ -44,9 +44,9 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
+    public List<Resume> runCopyAll() {
         ArrayList<Resume> resumeArray = new ArrayList<>(map.values());
-        return resumeArray.toArray(new Resume[map.size()]);
+        return Arrays.asList(resumeArray.toArray(new Resume[map.size()]));
     }
 
     @Override
