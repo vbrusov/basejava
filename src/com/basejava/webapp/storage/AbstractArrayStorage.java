@@ -6,7 +6,7 @@ import com.basejava.webapp.model.Resume;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMIT = 10_000;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -22,8 +22,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void runUpdate(Resume resume, Object key) {
-        storage[(Integer) key] = resume;
+    protected void runUpdate(Resume resume, Integer key) {
+        storage[key] = resume;
     }
 
     @Override
@@ -32,29 +32,29 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void runSave(Resume resume, Object key) {
+    protected void runSave(Resume resume, Integer key) {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", resume.getUuid());
         }
-        insertResume(resume, (Integer) key);
+        insertResume(resume, key);
         size++;
     }
 
     @Override
-    protected void runDelete(Object key) {
-        replaceDeletedResume((Integer) key);
+    protected void runDelete(Integer key) {
+        replaceDeletedResume(key);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    protected Resume runGet(Object key) {
-        return storage[(Integer) key];
+    protected Resume runGet(Integer key) {
+        return storage[key];
     }
 
     @Override
-    protected boolean isExist(Object key) {
-        return (Integer) key >= 0;
+    protected boolean isExist(Integer key) {
+        return key >= 0;
     }
 
     protected abstract void replaceDeletedResume(int index);

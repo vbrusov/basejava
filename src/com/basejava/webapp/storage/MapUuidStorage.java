@@ -4,37 +4,37 @@ import com.basejava.webapp.model.Resume;
 
 import java.util.*;
 
-public class MapUuidStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage<String> {
 
     private final Map<String, Resume> map = new LinkedHashMap<>();
 
     @Override
-    protected boolean isExist(Object uuid) {
-        return map.containsKey((String) uuid);
+    protected boolean isExist(String uuid) {
+        return map.containsKey(uuid);
     }
 
     @Override
-    protected void runUpdate(Resume resume, Object uuid) {
-        map.put((String) uuid, resume);
+    protected void runUpdate(Resume resume, String uuid) {
+        map.put(uuid, resume);
     }
 
     @Override
-    protected void runSave(Resume resume, Object uuid) {
-        map.put((String) uuid, resume);
+    protected void runSave(Resume resume, String uuid) {
+        map.put(uuid, resume);
     }
 
     @Override
-    protected void runDelete(Object uuid) {
+    protected void runDelete(String uuid) {
         map.remove(uuid);
     }
 
     @Override
-    protected Resume runGet(Object uuid) {
+    protected Resume runGet(String uuid) {
         return map.get(uuid);
     }
 
     @Override
-    protected Object getKey(String uuid) {
+    protected String getKey(String uuid) {
         return uuid;
     }
 

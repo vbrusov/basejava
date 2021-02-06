@@ -6,40 +6,49 @@ import com.basejava.webapp.model.Resume;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
-public abstract class AbstractStorage implements Storage {
+public abstract class AbstractStorage<SearchKey> implements Storage {
+
+    private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
 
     public void update(Resume resume) {
-        Object key = existKey(resume.getUuid());
+        LOG.info("Update " + resume);
+        SearchKey key = existKey(resume.getUuid());
         runUpdate(resume, key);
     }
 
     public void save(Resume resume) {
-        Object key = notExistKey(resume.getUuid());
+        LOG.info("Save " + resume);
+        SearchKey key = notExistKey(resume.getUuid());
         runSave(resume, key);
     }
 
     public void delete(String uuid) {
-        Object key = existKey(uuid);
+        LOG.info("Delete " + uuid);
+        SearchKey key = existKey(uuid);
         runDelete(key);
     }
 
     public Resume get(String uuid) {
-        Object key = existKey(uuid);
+        LOG.info("Get " + uuid);
+        SearchKey key = existKey(uuid);
         return runGet(key);
     }
 
-    private Object existKey(String uuid) {
-        Object key = getKey(uuid);
+    private SearchKey existKey(String uuid) {
+        SearchKey key = getKey(uuid);
         if (!isExist(key)) {
+            LOG.warning("Resume " + uuid + " not exist");
             throw new NotExistStorageException(uuid);
         }
         return key;
     }
 
-    private Object notExistKey(String uuid) {
-        Object key = getKey(uuid);
+    private SearchKey notExistKey(String uuid) {
+        SearchKey key = getKey(uuid);
         if (isExist(key)) {
+            LOG.warning("Resume " + uuid + " already exist");
             throw new ExistStorageException(uuid);
         }
         return key;
@@ -47,6 +56,7 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
+        LOG.info("getAllSorted");
         List<Resume> list = runCopyAll();
         Collections.sort(list);
         return list;
@@ -54,15 +64,15 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract List<Resume> runCopyAll();
 
-    protected abstract boolean isExist(Object key);
+    protected abstract boolean isExist(SearchKey key);
 
-    protected abstract void runUpdate(Resume resume, Object key);
+    protected abstract void runUpdate(Resume resume, SearchKey key);
 
-    protected abstract void runSave(Resume resume, Object key);
+    protected abstract void runSave(Resume resume, SearchKey key);
 
-    protected abstract void runDelete(Object key);
+    protected abstract void runDelete(SearchKey key);
 
-    protected abstract Resume runGet(Object key);
+    protected abstract Resume runGet(SearchKey key);
 
-    protected abstract Object getKey(String uuid);
+    protected abstract SearchKey getKey(String uuid);
 }
