@@ -61,5 +61,5 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     protected abstract void insertResume(Resume resume, int index);
 
-    protected abstract Integer getKey(String uuid);
+    protected abstract Integer getSearchKey(String uuid);
 }

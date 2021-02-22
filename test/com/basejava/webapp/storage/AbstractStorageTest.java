@@ -2,11 +2,12 @@ package com.basejava.webapp.storage;
 
 import com.basejava.webapp.exception.ExistStorageException;
 import com.basejava.webapp.exception.NotExistStorageException;
-import com.basejava.webapp.model.Resume;
+import com.basejava.webapp.model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,16 +16,43 @@ public abstract class AbstractStorageTest {
     protected final Storage storage;
 
     private static final String UUID_1 = "uuid1";
-    private static final Resume RESUME_1 = new Resume(UUID_1, "fullNameTest1");
-
     private static final String UUID_2 = "uuid2";
-    private static final Resume RESUME_2 = new Resume(UUID_2, "fullNameTest2");
-
     private static final String UUID_3 = "uuid3";
-    private static final Resume RESUME_3 = new Resume(UUID_3, "fullNameTest3");
-
     private static final String UUID_4 = "uuid4";
-    private static final Resume RESUME_4 = new Resume(UUID_4, "fullNameTest4");
+
+    private static final Resume R1;
+    private static final Resume R2;
+    private static final Resume R3;
+    private static final Resume R4;
+
+    static {
+        R1 = new Resume(UUID_1, "Name1");
+        R2 = new Resume(UUID_2, "Name2");
+        R3 = new Resume(UUID_3, "Name3");
+        R4 = new Resume(UUID_4, "Name4");
+
+        R1.addContact(ContactType.MAIL, "slenderman.kd@yahoo.com");
+        R1.addContact(ContactType.PHONE, "*******9847");
+        R1.addSections(SectionType.OBJECTIVE, new TextSection("Objective1"));
+        R1.addSections(SectionType.PERSONAL, new TextSection("Personal data"));
+        R1.addSections(SectionType.ACHIEVEMENT, new ListSection("Achievement1", "Achievement2", "Achievement3"));
+        R1.addSections(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL"));
+        R1.addSections(SectionType.EXPERIENCE,
+                new OrganizationSection(
+                        new Organization("TIS-Dialog", "http://tis-dialog.ru",
+                                new Organization.Position(2011, Month.OCTOBER, "Technical Support Professional", "Support"))));
+        R1.addSections(SectionType.EDUCATION,
+                new OrganizationSection(
+                        new Organization("Institute", null,
+                                new Organization.Position(2006, Month.SEPTEMBER, 2010, Month.JUNE, "Student", "IT faculty"),
+                                new Organization.Position(2011, Month.SEPTEMBER, 2015, Month.JULY, "Bachelor", "IT faculty"))));
+        R2.addContact(ContactType.SKYPE, "Skype2");
+        R2.addContact(ContactType.PHONE, "222222");
+        R2.addSections(SectionType.EXPERIENCE,
+                new OrganizationSection(
+                        new Organization("Organization2", "http://organization2.ru",
+                                new Organization.Position(2015, Month.SEPTEMBER, 2020, Month.JANUARY, "Position2", "Content2"))));
+    }
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -33,9 +61,9 @@ public abstract class AbstractStorageTest {
     @Before
     public void setUp() throws Exception {
         storage.clear();
-        storage.save(RESUME_1);
-        storage.save(RESUME_2);
-        storage.save(RESUME_3);
+        storage.save(R1);
+        storage.save(R2);
+        storage.save(R3);
     }
 
     @Test
@@ -51,9 +79,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() throws Exception {
-        Resume RESUME_5 = new Resume(UUID_1, "fullNameTest1");
-        storage.update(RESUME_5);
-        Assert.assertEquals(RESUME_5, RESUME_1);
+        Resume newResume = new Resume(UUID_1, "New Name");
+        storage.update(newResume);
+        Assert.assertEquals(newResume, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -65,19 +93,19 @@ public abstract class AbstractStorageTest {
     public void getAll() throws Exception {
         List<Resume> list = storage.getAllSorted();
         Assert.assertEquals(3, list.size());
-        Assert.assertEquals(list, Arrays.asList(RESUME_1, RESUME_2, RESUME_3));
+        Assert.assertEquals(list, Arrays.asList(R1, R2, R3));
     }
 
     @Test
     public void save() throws Exception {
-        storage.save(RESUME_4);
+        storage.save(R4);
         Assert.assertEquals(4, storage.size());
-        Assert.assertEquals(RESUME_4, storage.get(UUID_4));
+        Assert.assertEquals(R4, storage.get(UUID_4));
     }
 
     @Test(expected = ExistStorageException.class)
     public void saveExist() throws Exception {
-        storage.save(RESUME_1);
+        storage.save(R1);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -94,9 +122,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() throws Exception {
-        Assert.assertEquals(RESUME_1, storage.get(UUID_1));
-        Assert.assertEquals(RESUME_2, storage.get(UUID_2));
-        Assert.assertEquals(RESUME_3, storage.get(UUID_3));
+        Assert.assertEquals(R1, storage.get(UUID_1));
+        Assert.assertEquals(R2, storage.get(UUID_2));
+        Assert.assertEquals(R3, storage.get(UUID_3));
     }
 
     @Test(expected = NotExistStorageException.class)
