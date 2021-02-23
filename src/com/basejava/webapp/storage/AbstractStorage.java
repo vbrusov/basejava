@@ -15,25 +15,7 @@ public abstract class AbstractStorage<SearchKey> implements Storage {
     public void update(Resume resume) {
         LOG.info("Update " + resume);
         SearchKey key = existKey(resume.getUuid());
-        runUpdate(resume, key);
-    }
-
-    public void save(Resume resume) {
-        LOG.info("Save " + resume);
-        SearchKey key = notExistKey(resume.getUuid());
-        runSave(resume, key);
-    }
-
-    public void delete(String uuid) {
-        LOG.info("Delete " + uuid);
-        SearchKey key = existKey(uuid);
-        runDelete(key);
-    }
-
-    public Resume get(String uuid) {
-        LOG.info("Get " + uuid);
-        SearchKey key = existKey(uuid);
-        return runGet(key);
+        doUpdate(resume, key);
     }
 
     private SearchKey existKey(String uuid) {
@@ -54,25 +36,43 @@ public abstract class AbstractStorage<SearchKey> implements Storage {
         return key;
     }
 
+    public void save(Resume resume) {
+        LOG.info("Save " + resume);
+        SearchKey key = notExistKey(resume.getUuid());
+        doSave(resume, key);
+    }
+
+    public Resume get(String uuid) {
+        LOG.info("Get " + uuid);
+        SearchKey key = existKey(uuid);
+        return doGet(key);
+    }
+
+    public void delete(String uuid) {
+        LOG.info("Delete " + uuid);
+        SearchKey key = existKey(uuid);
+        doDelete(key);
+    }
+
     @Override
     public List<Resume> getAllSorted() {
         LOG.info("getAllSorted");
-        List<Resume> list = runCopyAll();
+        List<Resume> list = doCopyAll();
         Collections.sort(list);
         return list;
     }
 
-    protected abstract List<Resume> runCopyAll();
+    protected abstract List<Resume> doCopyAll();
 
     protected abstract boolean isExist(SearchKey key);
 
-    protected abstract void runUpdate(Resume resume, SearchKey key);
+    protected abstract void doUpdate(Resume resume, SearchKey key);
 
-    protected abstract void runSave(Resume resume, SearchKey key);
+    protected abstract void doSave(Resume resume, SearchKey key);
 
-    protected abstract void runDelete(SearchKey key);
+    protected abstract void doDelete(SearchKey key);
 
-    protected abstract Resume runGet(SearchKey key);
+    protected abstract Resume doGet(SearchKey key);
 
     protected abstract SearchKey getSearchKey(String uuid);
 }

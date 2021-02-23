@@ -7,11 +7,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
+    protected static final File STORAGE_DIR = new File("C:\\Java\\basejava\\storage");
 
     protected final Storage storage;
 
@@ -67,14 +69,14 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void size() throws Exception {
-        Assert.assertEquals(3, storage.size());
-    }
-
-    @Test
     public void clear() throws Exception {
         storage.clear();
         Assert.assertEquals(0, storage.size());
+    }
+
+    @Test
+    public void size() throws Exception {
+        Assert.assertEquals(3, storage.size());
     }
 
     @Test
@@ -90,13 +92,6 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAll() throws Exception {
-        List<Resume> list = storage.getAllSorted();
-        Assert.assertEquals(3, list.size());
-        Assert.assertEquals(list, Arrays.asList(R1, R2, R3));
-    }
-
-    @Test
     public void save() throws Exception {
         storage.save(R4);
         Assert.assertEquals(4, storage.size());
@@ -106,6 +101,18 @@ public abstract class AbstractStorageTest {
     @Test(expected = ExistStorageException.class)
     public void saveExist() throws Exception {
         storage.save(R1);
+    }
+
+    @Test
+    public void get() throws Exception {
+        Assert.assertEquals(R1, storage.get(UUID_1));
+        Assert.assertEquals(R2, storage.get(UUID_2));
+        Assert.assertEquals(R3, storage.get(UUID_3));
+    }
+
+    @Test(expected = NotExistStorageException.class)
+    public void getNotExist() throws Exception {
+        storage.get(UUID_4);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -121,14 +128,19 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void get() throws Exception {
-        Assert.assertEquals(R1, storage.get(UUID_1));
-        Assert.assertEquals(R2, storage.get(UUID_2));
-        Assert.assertEquals(R3, storage.get(UUID_3));
+    public void getAll() throws Exception {
+        List<Resume> list = storage.getAllSorted();
+        Assert.assertEquals(3, list.size());
+        Assert.assertEquals(list, Arrays.asList(R1, R2, R3));
     }
 
-    @Test(expected = NotExistStorageException.class)
-    public void getNotExist() throws Exception {
-        storage.get(UUID_4);
-    }
+
+
+
+
+
+
+
+
+
 }

@@ -10,28 +10,13 @@ public class ListStorage extends AbstractStorage<Integer> {
     private final List<Resume> list = new ArrayList<Resume>();
 
     @Override
-    protected boolean isExist(Integer key) {
-        return key != null;
+    public void clear() {
+        list.clear();
     }
 
     @Override
-    protected void runUpdate(Resume resume, Integer key) {
-        list.set(key, resume);
-    }
-
-    @Override
-    protected void runSave(Resume resume, Integer key) {
-        list.add(resume);
-    }
-
-    @Override
-    protected void runDelete(Integer key) {
-        list.remove(key.intValue());
-    }
-
-    @Override
-    protected Resume runGet(Integer key) {
-        return list.get(key);
+    public int size() {
+        return list.size();
     }
 
     @Override
@@ -44,17 +29,33 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    public void clear() {
-        list.clear();
+    protected void doUpdate(Resume resume, Integer key) {
+        list.set(key, resume);
     }
 
     @Override
-    public List<Resume> runCopyAll() {
+    protected boolean isExist(Integer key) {
+        return key != null;
+    }
+
+    @Override
+    protected void doSave(Resume resume, Integer key) {
+        list.add(resume);
+    }
+
+    @Override
+    protected Resume doGet(Integer key) {
+        return list.get(key);
+    }
+
+    @Override
+    protected void doDelete(Integer key) {
+        list.remove(key.intValue());
+    }
+
+    @Override
+    public List<Resume> doCopyAll() {
         return new ArrayList<>(list);
     }
 
-    @Override
-    public int size() {
-        return list.size();
-    }
 }

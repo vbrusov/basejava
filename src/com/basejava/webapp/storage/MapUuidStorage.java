@@ -9,28 +9,13 @@ public class MapUuidStorage extends AbstractStorage<String> {
     private final Map<String, Resume> map = new LinkedHashMap<>();
 
     @Override
-    protected boolean isExist(String uuid) {
-        return map.containsKey(uuid);
+    public void clear() {
+        map.clear();
     }
 
     @Override
-    protected void runUpdate(Resume resume, String uuid) {
-        map.put(uuid, resume);
-    }
-
-    @Override
-    protected void runSave(Resume resume, String uuid) {
-        map.put(uuid, resume);
-    }
-
-    @Override
-    protected void runDelete(String uuid) {
-        map.remove(uuid);
-    }
-
-    @Override
-    protected Resume runGet(String uuid) {
-        return map.get(uuid);
+    public int size() {
+        return map.size();
     }
 
     @Override
@@ -39,18 +24,35 @@ public class MapUuidStorage extends AbstractStorage<String> {
     }
 
     @Override
-    public void clear() {
-        map.clear();
+    protected void doUpdate(Resume resume, String uuid) {
+        map.put(uuid, resume);
     }
 
     @Override
-    public List<Resume> runCopyAll() {
+    protected boolean isExist(String uuid) {
+        return map.containsKey(uuid);
+    }
+
+    @Override
+    protected void doSave(Resume resume, String uuid) {
+        map.put(uuid, resume);
+    }
+
+    @Override
+    protected Resume doGet(String uuid) {
+        return map.get(uuid);
+    }
+
+    @Override
+    protected void doDelete(String uuid) {
+        map.remove(uuid);
+    }
+
+    @Override
+    public List<Resume> doCopyAll() {
         ArrayList<Resume> resumeArray = new ArrayList<>(map.values());
         return Arrays.asList(resumeArray.toArray(new Resume[map.size()]));
     }
 
-    @Override
-    public int size() {
-        return map.size();
-    }
+
 }

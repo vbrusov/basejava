@@ -11,6 +11,8 @@ public interface Storage {
 
     void clear();
 
+    int size();
+
     void update(Resume resume);
 
     void save(Resume resume);
@@ -19,10 +21,7 @@ public interface Storage {
 
     void delete(String uuid);
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
     List<Resume> getAllSorted();
 
-    int size();
+
 }

@@ -12,27 +12,27 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
-    public int size() {
-        return size;
-    }
-
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
+    public int size() {
+        return size;
+    }
+
     @Override
-    protected void runUpdate(Resume resume, Integer key) {
+    protected void doUpdate(Resume resume, Integer key) {
         storage[key] = resume;
     }
 
     @Override
-    public List<Resume> runCopyAll() {
-        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
+    protected boolean isExist(Integer key) {
+        return key >= 0;
     }
 
     @Override
-    protected void runSave(Resume resume, Integer key) {
+    protected void doSave(Resume resume, Integer key) {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", resume.getUuid());
         }
@@ -41,20 +41,20 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected void runDelete(Integer key) {
+    protected Resume doGet(Integer key) {
+        return storage[key];
+    }
+
+    @Override
+    protected void doDelete(Integer key) {
         replaceDeletedResume(key);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    protected Resume runGet(Integer key) {
-        return storage[key];
-    }
-
-    @Override
-    protected boolean isExist(Integer key) {
-        return key >= 0;
+    public List<Resume> doCopyAll() {
+        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
 
     protected abstract void replaceDeletedResume(int index);
