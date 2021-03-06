@@ -1,5 +1,6 @@
 package com.basejava.webapp.storage;
 
+import com.basejava.webapp.Config;
 import com.basejava.webapp.exception.ExistStorageException;
 import com.basejava.webapp.exception.NotExistStorageException;
 import com.basejava.webapp.model.*;
@@ -13,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("C:\\Java\\basejava\\storage");
+    protected static final File STORAGE_DIR = Config.get().getStorageDir(); // new File("C:\\Java\\basejava\\storage");
 
     protected final Storage storage;
 
@@ -33,7 +34,7 @@ public abstract class AbstractStorageTest {
         R3 = new Resume(UUID_3, "Name3");
         R4 = new Resume(UUID_4, "Name4");
 
-        R1.addContact(ContactType.MAIL, "slenderman.kd@yahoo.com");
+        R1.addContact(ContactType.MAIL, "s********n.kd@yahoo.com");
         R1.addContact(ContactType.PHONE, "*******9847");
         R1.addSections(SectionType.OBJECTIVE, new TextSection("Objective1"));
         R1.addSections(SectionType.PERSONAL, new TextSection("Personal data"));
@@ -41,7 +42,7 @@ public abstract class AbstractStorageTest {
         R1.addSections(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL"));
         R1.addSections(SectionType.EXPERIENCE,
                 new OrganizationSection(
-                        new Organization("TIS-Dialog", "http://tis-dialog.ru",
+                        new Organization("****Dialog", "http://**********.ru",
                                 new Organization.Position(2011, Month.OCTOBER, "Technical Support Professional", "Support"))));
         R1.addSections(SectionType.EDUCATION,
                 new OrganizationSection(
