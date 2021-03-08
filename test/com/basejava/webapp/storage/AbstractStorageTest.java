@@ -3,25 +3,25 @@ package com.basejava.webapp.storage;
 import com.basejava.webapp.Config;
 import com.basejava.webapp.exception.ExistStorageException;
 import com.basejava.webapp.exception.NotExistStorageException;
-import com.basejava.webapp.model.*;
+import com.basejava.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class AbstractStorageTest {
     protected static final File STORAGE_DIR = Config.get().getStorageDir(); // new File("C:\\Java\\basejava\\storage");
 
     protected final Storage storage;
 
-    private static final String UUID_1 = "uuid1";
-    private static final String UUID_2 = "uuid2";
-    private static final String UUID_3 = "uuid3";
-    private static final String UUID_4 = "uuid4";
+    private static final String UUID_1 = UUID.randomUUID().toString();
+    private static final String UUID_2 = UUID.randomUUID().toString();
+    private static final String UUID_3 = UUID.randomUUID().toString();
+    private static final String UUID_4 = UUID.randomUUID().toString();
 
     private static final Resume R1;
     private static final Resume R2;
@@ -34,27 +34,28 @@ public abstract class AbstractStorageTest {
         R3 = new Resume(UUID_3, "Name3");
         R4 = new Resume(UUID_4, "Name4");
 
-        R1.addContact(ContactType.MAIL, "s********n.kd@yahoo.com");
-        R1.addContact(ContactType.PHONE, "*******9847");
-        R1.addSections(SectionType.OBJECTIVE, new TextSection("Objective1"));
-        R1.addSections(SectionType.PERSONAL, new TextSection("Personal data"));
-        R1.addSections(SectionType.ACHIEVEMENT, new ListSection("Achievement1", "Achievement2", "Achievement3"));
-        R1.addSections(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL"));
-        R1.addSections(SectionType.EXPERIENCE,
-                new OrganizationSection(
-                        new Organization("****Dialog", "http://**********.ru",
-                                new Organization.Position(2011, Month.OCTOBER, "Technical Support Professional", "Support"))));
-        R1.addSections(SectionType.EDUCATION,
-                new OrganizationSection(
-                        new Organization("Institute", null,
-                                new Organization.Position(2006, Month.SEPTEMBER, 2010, Month.JUNE, "Student", "IT faculty"),
-                                new Organization.Position(2011, Month.SEPTEMBER, 2015, Month.JULY, "Bachelor", "IT faculty"))));
-        R2.addContact(ContactType.SKYPE, "Skype2");
-        R2.addContact(ContactType.PHONE, "222222");
-        R2.addSections(SectionType.EXPERIENCE,
-                new OrganizationSection(
-                        new Organization("Organization2", "http://organization2.ru",
-                                new Organization.Position(2015, Month.SEPTEMBER, 2020, Month.JANUARY, "Position2", "Content2"))));
+//        R1.addContact(ContactType.MAIL, "s********n.kd@yahoo.com");
+//        R1.addContact(ContactType.PHONE, "*******9847");
+//        R1.addSections(SectionType.OBJECTIVE, new TextSection("Objective1"));
+//        R1.addSections(SectionType.PERSONAL, new TextSection("Personal data"));
+//        R1.addSections(SectionType.ACHIEVEMENT, new ListSection("Achievement1", "Achievement2", "Achievement3"));
+//        R1.addSections(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL"));
+//        R1.addSections(SectionType.EXPERIENCE,
+//                new OrganizationSection(
+//                        new Organization("****Dialog", "http://**********.ru",
+//                                new Organization.Position(2011, Month.OCTOBER, "Technical Support Professional", "Support"))));
+//        R1.addSections(SectionType.EDUCATION,
+//                new OrganizationSection(
+//                        new Organization("Institute", null,
+//                                new Organization.Position(2006, Month.SEPTEMBER, 2010, Month.JUNE, "Student", "IT faculty"),
+//                                new Organization.Position(2011, Month.SEPTEMBER, 2015, Month.JULY, "Bachelor", "IT faculty"))));
+//        R2.addContact(ContactType.SKYPE, "Skype2");
+//        R2.addContact(ContactType.PHONE, "222222");
+//        R2.addSections(SectionType.EXPERIENCE,
+//                new OrganizationSection(
+//                        new Organization("Organization2", "http://organization2.ru",
+//                                new Organization.Position(2015, Month.SEPTEMBER, 2020, Month.JANUARY, "Position2", "Content2"))));
+//
     }
 
     protected AbstractStorageTest(Storage storage) {
